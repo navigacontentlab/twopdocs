@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package directory;
+option go_package = "bitbucket.org/infomaker/directory/rpc/directory";
+
+// Info service for accessing organisation information.
+service Info {
+  // ContentRepository returns infomation about the available content
+  // repositories for an organisation.
+  rpc ContentRepository(ContentRepositoryReq) returns (ContentRepositoryRes);
+}
+
+message ContentRepositoryReq {}
+
+message ContentRepositoryRes {
+  // Region is the region the organisation is associated with.
+  string region = 1;
+  // CcaEnabled is true if a editorial content repository has been
+  // configured for the organisation.
+  bool ccaEnabled = 2;
+  // OpenContent contains information about the Open Content
+  // installations for the organisation.
+  map<string, OCInfo> openContent = 3;
+}
+
+// OCInfo describes a Open Content installation.
+message OCInfo {
+  // ApiEndpoint points to the Open Content REST API
+  string apiEndpoint = 1;
+  // Region is the region that Open Content has been installed in.
+  string region = 2;
+  // KafkaEnabled is true if the installation has a configured Kafka
+  // topic.
+  bool kafkaEnabled = 3;
+  // CcaVerified is true if the contents of the installation has been
+  // verified to work with the NavigaDoc translation layer.
+  bool ccaVerified = 4;
+}
