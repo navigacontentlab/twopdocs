@@ -11,7 +11,7 @@ bin/protoc-gen-openapi3: go.mod $(wildcard *.go) cmd/protoc-gen-openapi3/main.go
 generate: $(service)-openapi.json
 
 $(service)-openapi.json: rpc/$(service)/service.proto $(proto_plugins)
-	PATH=$(bin_dir):$(PATH) protoc \
+	PATH="$(bin_dir):$(PATH)" protoc \
 	--proto_path=. \
 	--openapi3_out=. --openapi3_opt=application=$(service),version=$(version) \
 	rpc/$(service)/service.proto
