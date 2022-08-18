@@ -68,6 +68,12 @@ func ToOpenAPI(
 
 	for _, file := range d.Files {
 		for _, service := range file.Services {
+
+			doc.Tags = append(doc.Tags, &openapi3.Tag{
+				Name:        service.Name,
+				Description: service.Description,
+			})
+
 			for _, method := range service.Methods {
 				path, op, err := createOperation(&doc, schemaGen, service, method)
 				if err != nil {
@@ -75,6 +81,8 @@ func ToOpenAPI(
 						"failed to create the operation for %q: %w",
 						method.Name, err)
 				}
+
+				op.Tags = append(op.Tags, service.Name)
 
 				op.Security = openapi3.NewSecurityRequirements().With(requireBearer)
 
@@ -128,6 +136,7 @@ func createOperation(
 ) (string, *openapi3.Operation, error) {
 	op := openapi3.NewOperation()
 
+	op.Summary = method.Name
 	op.Description = method.Description
 
 	methodPath := fmt.Sprintf("/twirp/%s/%s",
