@@ -3,7 +3,7 @@ module github.com/navigacontentlab/twopdocs
 go 1.19
 
 require (
-	github.com/getkin/kin-openapi v0.116.0
+	github.com/getkin/kin-openapi v0.119.0
 	google.golang.org/protobuf v1.31.0
 )
 
