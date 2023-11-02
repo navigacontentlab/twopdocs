@@ -54,6 +54,7 @@ func ToOpenAPI(
 		Version: version,
 	}
 
+	doc.Components = &openapi3.Components{}
 	doc.Components.Schemas = make(openapi3.Schemas)
 	doc.Components.SecuritySchemes = make(openapi3.SecuritySchemes)
 
@@ -284,7 +285,11 @@ func (sg *SchemaGenerator) fieldSchema(f MessageField) (*openapi3.SchemaRef, err
 			return nil, fmt.Errorf("failed to generate array item schema: %w", err)
 		}
 
-		schema.AdditionalProperties = itemSchema
+		hasSchemaRef := true
+		schema.AdditionalProperties = openapi3.AdditionalProperties{
+			Has:    &hasSchemaRef,
+			Schema: itemSchema,
+		}
 
 		return schema.NewRef(), nil
 	}
