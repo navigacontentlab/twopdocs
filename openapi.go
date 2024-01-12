@@ -285,9 +285,7 @@ func (sg *SchemaGenerator) fieldSchema(f MessageField) (*openapi3.SchemaRef, err
 			return nil, fmt.Errorf("failed to generate array item schema: %w", err)
 		}
 
-		hasSchemaRef := true
 		schema.AdditionalProperties = openapi3.AdditionalProperties{
-			Has:    &hasSchemaRef,
 			Schema: itemSchema,
 		}
 
