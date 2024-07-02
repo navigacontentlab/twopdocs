@@ -44,7 +44,7 @@ func NavigaSaasServer(application string, infomaker bool) *openapi3.Server {
 
 func ToOpenAPI(
 	application string, version string, d Doc,
-	gen *protogen.Plugin, schemaGen *SchemaGenerator,
+	_ *protogen.Plugin, schemaGen *SchemaGenerator,
 ) (openapi3.T, error) {
 	var doc openapi3.T
 
@@ -133,7 +133,7 @@ func schemaRef(typeName string) *openapi3.SchemaRef {
 }
 
 func createOperation(
-	doc *openapi3.T, sg *SchemaGenerator, service Service, method Method,
+	_ *openapi3.T, _ *SchemaGenerator, service Service, method Method,
 ) (string, *openapi3.Operation, error) {
 	op := openapi3.NewOperation()
 
@@ -179,7 +179,7 @@ func NewSchemaGenerator(doc Doc) *SchemaGenerator {
 
 func GoogleTimestamp(f MessageField) (*openapi3.SchemaRef, error) {
 	schema := openapi3.NewSchema()
-	schema.Type = "string"
+	schema.Type = &openapi3.Types{openapi3.TypeString}
 	schema.Format = "date-time"
 	schema.Description = f.Description
 
@@ -190,7 +190,7 @@ func (sg *SchemaGenerator) EnumSchema(e Enum) (*openapi3.SchemaRef, error) {
 	schema := openapi3.NewSchema()
 
 	schema.Description = e.Description
-	schema.Type = "string"
+	schema.Type = &openapi3.Types{openapi3.TypeString}
 
 	for _, v := range e.Values {
 		schema.Enum = append(schema.Enum, v.Name)
@@ -201,7 +201,7 @@ func (sg *SchemaGenerator) EnumSchema(e Enum) (*openapi3.SchemaRef, error) {
 
 func (sg *SchemaGenerator) MessageSchema(typeName string) (*openapi3.SchemaRef, error) {
 	schema := openapi3.NewSchema()
-	schema.Type = "object"
+	schema.Type = &openapi3.Types{openapi3.TypeString}
 	schema.Properties = make(openapi3.Schemas)
 
 	msg := findMessage(sg.doc.Files, typeName)
@@ -248,7 +248,7 @@ func (sg *SchemaGenerator) fieldSchema(f MessageField) (*openapi3.SchemaRef, err
 	if f.IsRepeated {
 		schema := openapi3.NewSchema()
 		schema.Description = f.Description
-		schema.Type = "array"
+		schema.Type = &openapi3.Types{openapi3.TypeArray}
 
 		itemField := f
 		itemField.Description = ""
@@ -273,7 +273,7 @@ func (sg *SchemaGenerator) fieldSchema(f MessageField) (*openapi3.SchemaRef, err
 		schema := openapi3.NewSchema()
 		schema.Description = f.Description
 
-		schema.Type = "object"
+		schema.Type = &openapi3.Types{openapi3.TypeObject}
 
 		itemField := f
 		itemField.Description = ""
@@ -298,7 +298,7 @@ func (sg *SchemaGenerator) fieldSchema(f MessageField) (*openapi3.SchemaRef, err
 	if ok {
 		schema := openapi3.NewSchema()
 		schema.Description = f.Description
-		schema.Type = scalar
+		schema.Type = &openapi3.Types{scalar}
 
 		return schema.NewRef(), nil
 	}
