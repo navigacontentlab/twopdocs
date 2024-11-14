@@ -201,7 +201,7 @@ func (sg *SchemaGenerator) EnumSchema(e Enum) (*openapi3.SchemaRef, error) {
 
 func (sg *SchemaGenerator) MessageSchema(typeName string) (*openapi3.SchemaRef, error) {
 	schema := openapi3.NewSchema()
-	schema.Type = &openapi3.Types{openapi3.TypeString}
+	schema.Type = &openapi3.Types{openapi3.TypeObject}
 	schema.Properties = make(openapi3.Schemas)
 
 	msg := findMessage(sg.doc.Files, typeName)
