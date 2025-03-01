@@ -140,7 +140,7 @@ func createOperation(
 	op.Summary = method.Name
 	op.Description = method.Description
 
-	methodPath := fmt.Sprintf("/twirp/%s/%s",
+	methodPath := fmt.Sprintf("/%s/%s",
 		service.FullName, method.Name)
 
 	response := openapi3.NewResponse()

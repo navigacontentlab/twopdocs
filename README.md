@@ -1,4 +1,4 @@
-# Twirp OpenAPI 3 Docs
+# OpenAPI 3 Docs
 
 Generates OpenAPI 3 documentation from Twirp protobuf declarations.
 
@@ -24,13 +24,6 @@ $(service)-openapi.json: rpc/$(service)/service.proto $(proto_plugins)
 	--proto_path=. \
 	--openapi3_out=. --openapi3_opt=application=$(service),version=$(version) \
 	rpc/$(service)/service.proto
-```
-
-When used in another package installation can be handled like this:
-
-```
-bin/protoc-gen-twirp: go.mod
-	GOBIN=$(bin_dir) go install github.com/twitchtv/twirp/protoc-gen-twirp
 ```
 
 ...if you have specified twopdocs as a "tools.go" dependency:
